@@ -6,6 +6,46 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 
 const SPECIAL = "zA$2B_9C";
 
+function extractIdentifier(code){
+  try {
+    const ast = espree.parse(code, { ecmaVersion: 2020 });
+
+    const statement = ast.body[0];
+
+    // Handle common statement types
+    switch (statement.type) {
+      case 'VariableDeclaration':
+        return statement.declarations[0].id.name;
+      case 'FunctionDeclaration':
+        return statement.id.name;
+      case 'ExpressionStatement':
+        if (statement.expression.type === 'AssignmentExpression') {
+          return statement.expression.left.name || statement.expression.left.property.name;
+        }
+        break;
+      case 'ClassDeclaration':
+        return statement.id.name;
+      default:
+        console.warn(`Unsupported statement type for identifier extraction: ${statement.type}`);
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error parsing code:", error);
+    return null;
+  }
+}
+
+function runScript(code) {
+  const script = document.createElement('script');
+
+  script.textContent = `
+    ${SPECIAL} = ${code}
+  `;
+
+  document.head.appendChild(script);
+}
+
 function Output(props) {
   return (
     <div className="output-container">
@@ -16,12 +56,12 @@ function Output(props) {
 
 function NavBar() {
   const imageUrl = "https://media.licdn.com/dms/image/D4D03AQGEmEdo-SxQiw/profile-displayphoto-shrink_800_800/0/1718308673344?e=1724889600&v=beta&t=TjlBvN4i3AkFFCs1jll8n1N1hgZT5utCKwgBKNEfsQM";
-  const bookLogoUrl = "booklogo.png"; 
+
   return (
     <nav className='navbar'>
       <div className='navbar-left'>
         <div className='logo-container'>
-          <img src={bookLogoUrl}  alt='Book Logo' className='book-logo'/>
+          <img src='booklogo.png'  alt='Book Logo' className='book-logo'/>
           <span className='project-name'>SYS-Booker</span>
         </div>
         <div className="workspace-container">
@@ -41,50 +81,10 @@ function NavBar() {
   );
 }
 
-function App() {
+function Cell(props) {
   const [code, setCode] = useState();
   const [output, setOutput] = useState();
   const [showOutput, setShowOutput] = useState(false);
-
-  function extractIdentifier(code){
-    try {
-      const ast = espree.parse(code, { ecmaVersion: 2020 });
-  
-      const statement = ast.body[0];
-  
-      // Handle common statement types
-      switch (statement.type) {
-        case 'VariableDeclaration':
-          return statement.declarations[0].id.name;
-        case 'FunctionDeclaration':
-          return statement.id.name;
-        case 'ExpressionStatement':
-          if (statement.expression.type === 'AssignmentExpression') {
-            return statement.expression.left.name || statement.expression.left.property.name;
-          }
-          break;
-        case 'ClassDeclaration':
-          return statement.id.name;
-        default:
-          console.warn(`Unsupported statement type for identifier extraction: ${statement.type}`);
-      }
-
-      return null;
-    } catch (error) {
-      console.error("Error parsing code:", error);
-      return null;
-    }
-  }
-
-  function runScript(code) {
-    const script = document.createElement('script');
-
-    script.textContent = `
-      ${SPECIAL} = ${code}
-    `;
-
-    document.head.appendChild(script);
-  }
 
   function executeCode(code){
     try {
@@ -99,9 +99,7 @@ function App() {
   }
 
   return (
-    <>
-      <NavBar />
-      <div className='cell-container'>
+    <div className='cell-container'>
         {showOutput && <Output data={output}/>}
         <div className='code-editor-container'>
           <CodeEditor 
@@ -130,6 +128,29 @@ function App() {
           </button>
         </div>
       </div>
+  );
+}
+
+function App() {
+  const [cells, setCells] = useState([1]);
+  let count = 2;
+
+  function createNewCell() {
+    setCells([...cells, count++]);
+  }
+
+  return (
+    <>
+      <NavBar />
+      <div className='page-container'>
+        {cells.map((currCell, idx) => (
+          <Cell />
+        ))}
+        <button className='add-new-cell-button' onClick={() => createNewCell()}>
+          <img className='plus-icon' src='white-plus.svg' alt='plus-icon'/>
+        </button>
+      </div>
+      
     </>
   );
 }

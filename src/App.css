@@ -79,8 +79,13 @@
   background-color: #ddd;
 }
 
+.page-container {
+  width: 80%;
+  margin: 5% auto;
+}
+
 .cell-container {
-  width: 75%;
+  width: 90%;
   margin: 5% auto;
 }
 
@@ -139,4 +144,22 @@
   align-items: center;
   width: 24px;
   height: 24px;
+}
+
+.add-new-cell-button {
+  display: flex;
+  align-items: center;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  padding: 8px;
+  background-color: #000000;
+  cursor: pointer;
+  width: Hug(32px);
+  height: Hug(32px);
+}
+
+
+.add-new-cell-button:hover {
+  background-color: #333333;
+  color: #fff;
 }

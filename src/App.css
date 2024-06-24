@@ -1,12 +1,142 @@
-.code-editor-container {
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+}
+
+.project-name {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin-right: 10px;
+  color: #000000;
+  border-right: 1px solid black;
+  padding-right: 10px;
+  font-size: 22px;
+}
+
+.workspace-container {
+  display: flex;
+  align-items: center;
+}
+
+.workspace-name {
+  color: #333;
+  margin-left: 5px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.book-logo {
+  width: 24px;
+  height: 19px;
+  margin-right: 5px;
+}
+
+.profile-picture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.new-project-button {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid black;
+  border-radius: 8px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+}
+
+.plus-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.new-project-button:hover {
+  background-color: #ddd;
+}
+
+.cell-container {
   width: 75%;
   margin: 5% auto;
+}
+
+.output-container {
+  border: 1px solid #CDCDCD;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.code-editor-container {
   position: relative;
 }
 
-.code-editor-button {
+.run-button {
   position: absolute;
   top: 50%;
   right: 20px;
   transform: translateY(-50%);
+  padding: 8px;
+  border: 1px solid #5CB85C;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.run-button:hover {
+  background-color: #5CB85C;
+  color: #fff;
+}
+
+.ai-button {
+  position: absolute;
+  top: 50%;
+  right: 65px;
+  transform: translateY(-50%);
+  padding: 8px;
+  border: 1px solid #F79F19;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.ai-button:hover {
+  background-color: #F79F19;
+  color: #000;
+}
+
+.ai-logo {
+  display: flex;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+}
+
+.run-logo {
+  display: flex;
+  align-items: center;
+  width: 24px;
+  height: 24px;
 }

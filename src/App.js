@@ -55,7 +55,6 @@ function Output(props) {
 }
 
 function NavBar() {
-  const imageUrl = "https://media.licdn.com/dms/image/D4D03AQGEmEdo-SxQiw/profile-displayphoto-shrink_800_800/0/1718308673344?e=1724889600&v=beta&t=TjlBvN4i3AkFFCs1jll8n1N1hgZT5utCKwgBKNEfsQM";
 
   return (
     <nav className='navbar'>
@@ -65,7 +64,7 @@ function NavBar() {
           <span className='project-name'>SYS-Booker</span>
         </div>
         <div className="workspace-container">
-          <img src={imageUrl} alt="Profile Picture" className="profile-picture" />
+          <img src='profile-pic.jpeg' alt="Profile Picture" className="profile-picture" />
           <span className="workspace-name">Dr. Folorunso's Workspace</span>
         </div>
       </div>
@@ -88,11 +87,16 @@ function Cell(props) {
 
   function executeCode(code){
     try {
-      let codeIdentifier = extractIdentifier(code);
-      runScript(code);
-      const codeOutput = codeIdentifier ? codeIdentifier + " = " + window[SPECIAL] : window[SPECIAL];
-      setOutput(codeOutput);
-      setShowOutput(true);
+      if(code.trim().length > 0){
+        let codeIdentifier = extractIdentifier(code);
+        runScript(code);
+        const codeOutput = codeIdentifier ? codeIdentifier + " = " + window[SPECIAL] || "undefined" : window[SPECIAL] || "undefined";
+        setOutput(codeOutput);
+        setShowOutput(true);
+      } else {
+        setOutput('');
+        setShowOutput(false);
+      }
     } catch(error) {
       console.log("Error", error);
     }
@@ -144,7 +148,7 @@ function App() {
       <NavBar />
       <div className='page-container'>
         {cells.map((currCell, idx) => (
-          <Cell />
+          <Cell key={"cell-"+idx} />
         ))}
         <button className='add-new-cell-button' onClick={() => createNewCell()}>
           <img className='plus-icon' src='white-plus.svg' alt='plus-icon'/>
